@@ -2,11 +2,12 @@ import { useEffect } from "react";
 import { useCollectionStore } from "./store/useCollectionStore";
 import "./styles/main.scss";
 import { getPricingLabel } from "./helpers";
+import useInfiniteScroll from "./hooks/useInfiniteScroll";
 
 function App() {
-  const { collections, loading, error, fetchCollections } =
+  const { visibleCollections, loading, error, fetchCollections } =
     useCollectionStore();
-
+  useInfiniteScroll();
   useEffect(() => {
     fetchCollections(
       `https://closet-recruiting-api.azurewebsites.net/api/data`
@@ -17,7 +18,7 @@ function App() {
     <div className="bg-wrap">
       <div className="container">
         <div className="card-container">
-          {collections.map(
+          {visibleCollections.map(
             ({ id, creator, imagePath, title, pricingOption, price }) => {
               return (
                 <div key={id} className="card-wrapper">
