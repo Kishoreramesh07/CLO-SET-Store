@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useCollectionStore } from "./store/useCollectionStore";
 import "./styles/main.scss";
 import { Collections } from "./components/Collections";
+import Filter from "./components/Filter";
 
 function App() {
   const { fetchCollections } = useCollectionStore();
@@ -15,6 +16,7 @@ function App() {
   return (
     <div className="bg-wrap">
       <div className="container">
+        <Filter />
         <Collections />
       </div>
     </div>
