@@ -4,7 +4,7 @@ export enum PricingOption {
   ViewOnly = 2,
 }
 
-export interface collections {
+export interface collection {
   id: string;
   creator: string;
   imagePath: string;
