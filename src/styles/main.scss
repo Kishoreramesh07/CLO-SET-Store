@@ -1,8 +1,64 @@
 $primary-color: #fff;
 $secondary-color: #96969f;
-$bg-color: #1A1A1F;
+$bg-color: #1a1a1f;
+$border-radius: 5px;
 
 body {
   font-family: Arial, sans-serif;
   color: $primary-color;
+  margin: 0;
+  font-size: 16px;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
+.bg-wrap {
+  background-color: $bg-color;
+}
+
+.container {
+  max-width: 1140px;
+  margin: 0 auto;
+}
+
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 -15px;
+  .card-wrapper {
+    width: calc(25% - 30px);
+    padding: 0 15px 15px;
+    .img-wrapper {
+      display: flex;
+      border-radius: $border-radius;
+      overflow: hidden;
+      height: 350px;
+      img {
+        width: 100%;
+      }
+    }
+    .details-wrapper {
+      display: flex;
+      justify-content: space-between;
+      padding: 15px 0;
+      align-items: center;
+      .details{
+        max-width: 70%;
+        .title{
+          font-size: .875rem;
+        }
+        .creator{
+          color: $secondary-color;
+        }
+      }
+    }
+  }
 }
