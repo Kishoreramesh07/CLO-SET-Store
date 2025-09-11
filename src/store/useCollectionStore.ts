@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import type { collection } from "../interfaces/collections";
+import { getFilterState, updateQueryParams } from "../helpers";
 
 interface CollectionState {
   collections: collection[];
@@ -41,9 +42,17 @@ export const useCollectionStore = create<CollectionState>((set, get) => ({
       const response = await fetch(api);
       const data = await response.json();
 
+      const { filterPricingOption } = getFilterState();
+
+      const filteredCollections = getFilteredCollections(
+        filterPricingOption,
+        data
+      );
+
       set({
         collections: data,
-        visibleCollections: data.slice(0, get().limit),
+        visibleCollections: filteredCollections.slice(0, get().limit),
+        filterPricingOption,
         loading: false,
       });
     } catch (error) {
@@ -69,6 +78,7 @@ export const useCollectionStore = create<CollectionState>((set, get) => ({
 
     if (pricingOption === null) {
       set({ filterPricingOption: [] });
+      updateQueryParams(`pricingOption`, "");
       applyFilter();
       return;
     }
@@ -76,6 +86,8 @@ export const useCollectionStore = create<CollectionState>((set, get) => ({
     const updatedOptions = filterPricingOption.includes(pricingOption)
       ? filterPricingOption.filter((option) => option !== pricingOption)
       : [...filterPricingOption, pricingOption];
+
+    updateQueryParams(`pricingOption`, updatedOptions);
 
     set({ filterPricingOption: updatedOptions });
     applyFilter();

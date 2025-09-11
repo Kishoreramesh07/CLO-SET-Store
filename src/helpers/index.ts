@@ -30,3 +30,37 @@ export function debounce(func: () => void, delay: number) {
     }, delay);
   };
 }
+
+export const updateQueryParams = (paramKey: string, value?: number[] | string) => {
+  const url = new URL(window.location.href);
+  const params = new URLSearchParams(url.search);
+
+
+  if (Array.isArray(value) && value.length > 0) {
+    // to avoid comma encoding while conveting params tostring do it manual
+    params.delete(paramKey);
+    const otherParams = params.toString();
+    const query = `${paramKey}=${value.join(",")}`;
+    const finalQuery = otherParams ? `${query}&${otherParams}` : query;
+
+    window.history.pushState({}, "", `${url.pathname}?${finalQuery}`);
+    return;
+  }
+
+  if (typeof value === "string" && !!value) {
+    params.set(paramKey, value);
+  } else {
+    params.delete(paramKey);
+  }
+
+  window.history.pushState({}, "", `${url.pathname}?${params.toString()}`);
+};
+
+export const getFilterState = () => {
+  const urlParams = new URLSearchParams(window.location.search);
+  const pricingOption = urlParams.get("pricingOption");
+
+  return {
+    filterPricingOption: pricingOption ? pricingOption.split(",").map(Number) : [],
+  };
+};
