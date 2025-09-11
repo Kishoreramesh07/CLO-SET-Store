@@ -6,11 +6,14 @@ $search-bg-color: #222226;
 $border-radius: 3px;
 $card-padding: 15px;
 
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+
 body {
-  font-family: Arial, sans-serif;
+  font-family: "Inter", sans-serif;
+  font-style: normal;
   color: $primary-color;
   margin: 0;
-  font-size: 16px;
+  font-size: 14px;
 }
 
 h1,
@@ -21,7 +24,7 @@ h5,
 h6,
 p {
   margin-top: 0;
-  margin-bottom: 7.5px;
+  margin-bottom: 5px;
 }
 
 .bg-wrap {
@@ -63,11 +66,13 @@ p {
         max-width: 70%;
 
         .title {
-          font-size: 0.85rem;
+          font-size: 0.825rem;
+          font-weight: normal;
         }
 
         .creator {
           color: $secondary-color;
+          font-weight: normal;
         }
       }
     }
@@ -99,11 +104,11 @@ p {
 }
 
 .filter-container {
-  padding: $card-padding * 2 calc($card-padding/2.5 * 2);
+  padding: $card-padding * 1.5 calc($card-padding/2.5 * 2);
   .filter-wrapper {
     display: flex;
     justify-content: space-between;
-    padding: $card-padding * 1.25;
+    padding: $card-padding * 1.25 $card-padding * 1.5;
     background: $secondary-bg-color;
     border-radius: $border-radius;
     color: $secondary-color;
@@ -111,9 +116,10 @@ p {
     .pricing-option-wrapper {
       display: flex;
       gap: $card-padding;
+      align-items: center;
 
       p {
-        font-size: 0.875rem;
+        font-size: 0.7rem;
         margin-bottom: 0;
       }
 
@@ -131,7 +137,7 @@ p {
       border: none;
       color: $primary-color;
       cursor: pointer;
-      font-size: 0.8rem;
+      font-size: 0.7rem;
     }
   }
 }
@@ -144,7 +150,7 @@ p {
     width: 100%;
     background-color: $search-bg-color;
     color: $primary-color;
-    padding: ($card-padding) $card-padding * 1.5;
+    padding: ($card-padding * 1.15) $card-padding * 1.5;
     border: 0;
     border-radius: $border-radius;
     font-size: 1.075rem;

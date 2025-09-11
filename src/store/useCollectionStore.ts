@@ -11,7 +11,7 @@ interface CollectionState {
   fetchCollections: (api: string) => Promise<void>;
   loadMore: () => void;
   filterPricingOption: number[];
-  updatePricingFilter: (pricingOption: number | null) => void;
+  updateFilter: (pricingOption: number | null) => void;
   applyFilter: () => void;
   searchQuery: string;
   updateSearchQuery: (searchQuery: string) => void;
@@ -96,7 +96,7 @@ export const useCollectionStore = create<CollectionState>((set, get) => ({
     set({ visibleCollections: filteredCollections.slice(0, nextLimit) });
   },
 
-  updatePricingFilter: (pricingOption: number | null) => {
+  updateFilter: (pricingOption: number | null) => {
     const { filterPricingOption, applyFilter } = get();
 
     if (pricingOption === null) {
