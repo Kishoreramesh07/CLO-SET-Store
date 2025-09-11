@@ -11,20 +11,34 @@ interface CollectionState {
   fetchCollections: (api: string) => Promise<void>;
   loadMore: () => void;
   filterPricingOption: number[];
-  updateFilter: (pricingOption: number | null) => void;
+  updatePricingFilter: (pricingOption: number | null) => void;
   applyFilter: () => void;
+  searchQuery: string;
+  updateSearchQuery: (searchQuery: string) => void;
 }
 
 const getFilteredCollections = (
   filterPricingOption: CollectionState[`filterPricingOption`],
+  searchQuery: CollectionState[`searchQuery`],
   collections: CollectionState[`collections`]
 ) => {
-  const filteredCollections =
-    filterPricingOption.length > 0
-      ? collections.filter((collection) =>
-          filterPricingOption.includes(collection.pricingOption)
-        )
-      : collections;
+  let filteredCollections = collections;
+
+  if (filterPricingOption.length > 0) {
+    filteredCollections = filteredCollections.filter((collection) =>
+      filterPricingOption.includes(collection?.pricingOption)
+    );
+  }
+
+  if (searchQuery) {
+    const normalizedQuery = searchQuery.toLowerCase();
+    filteredCollections = filteredCollections.filter(
+      (collection) =>
+        collection?.creator?.toLowerCase()?.includes(normalizedQuery) ||
+        collection?.title?.toLowerCase()?.includes(normalizedQuery)
+    );
+  }
+
   return filteredCollections;
 };
 
@@ -35,6 +49,7 @@ export const useCollectionStore = create<CollectionState>((set, get) => ({
   error: null,
   limit: 12,
   filterPricingOption: [],
+  searchQuery: "",
 
   fetchCollections: async (api: string) => {
     try {
@@ -42,10 +57,11 @@ export const useCollectionStore = create<CollectionState>((set, get) => ({
       const response = await fetch(api);
       const data = await response.json();
 
-      const { filterPricingOption } = getFilterState();
+      const { filterPricingOption, searchQuery } = getFilterState();
 
       const filteredCollections = getFilteredCollections(
         filterPricingOption,
+        searchQuery,
         data
       );
 
@@ -53,6 +69,7 @@ export const useCollectionStore = create<CollectionState>((set, get) => ({
         collections: data,
         visibleCollections: filteredCollections.slice(0, get().limit),
         filterPricingOption,
+        searchQuery,
         loading: false,
       });
     } catch (error) {
@@ -61,19 +78,25 @@ export const useCollectionStore = create<CollectionState>((set, get) => ({
   },
 
   loadMore: () => {
-    const { collections, visibleCollections, limit, filterPricingOption } =
-      get();
+    const {
+      collections,
+      visibleCollections,
+      limit,
+      filterPricingOption,
+      searchQuery,
+    } = get();
     const nextLimit = visibleCollections.length + limit;
 
     const filteredCollections = getFilteredCollections(
       filterPricingOption,
+      searchQuery,
       collections
     );
 
     set({ visibleCollections: filteredCollections.slice(0, nextLimit) });
   },
 
-  updateFilter: (pricingOption: number | null) => {
+  updatePricingFilter: (pricingOption: number | null) => {
     const { filterPricingOption, applyFilter } = get();
 
     if (pricingOption === null) {
@@ -93,11 +116,21 @@ export const useCollectionStore = create<CollectionState>((set, get) => ({
     applyFilter();
   },
 
+  updateSearchQuery: (searchQuery) => {
+    const { applyFilter } = get();
+
+    set({ searchQuery });
+    updateQueryParams(`search`, searchQuery);
+
+    applyFilter();
+  },
+
   applyFilter: () => {
-    const { collections, filterPricingOption, limit } = get();
+    const { collections, filterPricingOption, searchQuery, limit } = get();
 
     const filteredCollections = getFilteredCollections(
       filterPricingOption,
+      searchQuery,
       collections
     );
 

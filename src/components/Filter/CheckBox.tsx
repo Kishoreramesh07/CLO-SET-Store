@@ -5,7 +5,7 @@ interface CheckBoxProps {
   value: number;
 }
 export default function CheckBox({ label, value }: CheckBoxProps) {
-  const { updateFilter, filterPricingOption } = useCollectionStore();
+  const { updatePricingFilter, filterPricingOption } = useCollectionStore();
 
   return (
     <label>
@@ -13,7 +13,7 @@ export default function CheckBox({ label, value }: CheckBoxProps) {
         className="pricingCheckbox"
         type="checkbox"
         value={value}
-        onClick={() => updateFilter(value)}
+        onChange={() => updatePricingFilter(value)}
         checked={filterPricingOption.includes(value)}
       />
       {label}

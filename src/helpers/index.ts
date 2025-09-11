@@ -59,8 +59,10 @@ export const updateQueryParams = (paramKey: string, value?: number[] | string) =
 export const getFilterState = () => {
   const urlParams = new URLSearchParams(window.location.search);
   const pricingOption = urlParams.get("pricingOption");
+  const searchQuery = urlParams.get("search");
 
   return {
     filterPricingOption: pricingOption ? pricingOption.split(",").map(Number) : [],
+    searchQuery: searchQuery ?? "", 
   };
 };
