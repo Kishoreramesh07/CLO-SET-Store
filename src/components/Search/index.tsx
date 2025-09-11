@@ -1,12 +1,17 @@
 import React from "react";
 import { useCollectionStore } from "../../store/useCollectionStore";
+import SearchIcon from "./SearchIcon";
 
 export default function Search() {
   const { searchQuery, updateSearchQuery } = useCollectionStore();
   return (
-    <input
-      value={searchQuery}
-      onChange={({ target: { value } }) => updateSearchQuery(value)}
-    />
+    <div className="search-wrapper">
+      <input
+        value={searchQuery}
+        onChange={({ target: { value } }) => updateSearchQuery(value)}
+        placeholder="Find the Items you're looking for"
+      />
+      <SearchIcon />
+    </div>
   );
 }

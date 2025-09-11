@@ -2,7 +2,8 @@ $primary-color: #fff;
 $secondary-color: #96969f;
 $bg-color: #1a1a1f;
 $secondary-bg-color: #16161a;
-$border-radius: 5px;
+$search-bg-color: #222226;
+$border-radius: 3px;
 $card-padding: 15px;
 
 body {
@@ -132,5 +133,25 @@ p {
       cursor: pointer;
       font-size: 0.8rem;
     }
+  }
+}
+
+.search-wrapper {
+  display: flex;
+  padding: $card-padding calc($card-padding/2.5 * 2) 0;
+  position: relative;
+  input {
+    width: 100%;
+    background-color: $search-bg-color;
+    color: $primary-color;
+    padding: ($card-padding) $card-padding * 1.5;
+    border: 0;
+    border-radius: $border-radius;
+    font-size: 1.075rem;
+  }
+  .searchIcon {
+    position: absolute;
+    right: $card-padding * 2;
+    top: $card-padding * 2;
   }
 }
