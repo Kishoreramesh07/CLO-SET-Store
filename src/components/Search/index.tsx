@@ -1,4 +1,3 @@
-import React from "react";
 import { useCollectionStore } from "../../store/useCollectionStore";
 import SearchIcon from "./SearchIcon";
 
