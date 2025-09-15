@@ -251,6 +251,13 @@ p {
 
         .option-checkbox {
           gap: calc($card-padding / 2);
+          label{
+            .pricingCheckbox {
+              width: 0.9rem;
+              height: 0.9rem;
+              margin-right: 5px;
+            }
+          }
         }
       }
     }
