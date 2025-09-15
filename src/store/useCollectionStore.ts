@@ -15,11 +15,14 @@ interface CollectionState {
   applyFilter: () => void;
   searchQuery: string;
   updateSearchQuery: (searchQuery: string) => void;
+  sortBy: string;
+  sort: (sortBy: string) => void;
 }
 
 const getFilteredCollections = (
   filterPricingOption: CollectionState[`filterPricingOption`],
   searchQuery: CollectionState[`searchQuery`],
+  sortBy: string,
   collections: CollectionState[`collections`]
 ) => {
   let filteredCollections = collections;
@@ -39,7 +42,17 @@ const getFilteredCollections = (
     );
   }
 
-  return filteredCollections;
+  if (sortBy === `2`) {
+    return [...filteredCollections].sort((a, b) => b.price - a.price);
+  }
+
+  if (sortBy === `3`) {
+    return [...filteredCollections].sort((a, b) => a.price - b.price);
+  }
+
+  return [...filteredCollections].sort((a, b) =>
+    a.title.localeCompare(b.title)
+  );
 };
 
 export const useCollectionStore = create<CollectionState>((set, get) => ({
@@ -50,6 +63,7 @@ export const useCollectionStore = create<CollectionState>((set, get) => ({
   limit: 12,
   filterPricingOption: [],
   searchQuery: "",
+  sortBy: `1`,
 
   fetchCollections: async (api: string) => {
     try {
@@ -57,11 +71,12 @@ export const useCollectionStore = create<CollectionState>((set, get) => ({
       const response = await fetch(api);
       const data = await response.json();
 
-      const { filterPricingOption, searchQuery } = getFilterState();
+      const { filterPricingOption, searchQuery, sortBy } = getFilterState();
 
       const filteredCollections = getFilteredCollections(
         filterPricingOption,
         searchQuery,
+        sortBy,
         data
       );
 
@@ -71,29 +86,46 @@ export const useCollectionStore = create<CollectionState>((set, get) => ({
         filterPricingOption,
         searchQuery,
         loading: false,
+        sortBy,
       });
     } catch (error) {
       console.error(`failed to fetch store collection`);
     }
   },
 
-  loadMore: () => {
+  loadMore: async () => {
     const {
       collections,
       visibleCollections,
       limit,
       filterPricingOption,
       searchQuery,
+      sortBy,
     } = get();
     const nextLimit = visibleCollections.length + limit;
 
     const filteredCollections = getFilteredCollections(
       filterPricingOption,
       searchQuery,
+      sortBy,
       collections
     );
 
-    set({ visibleCollections: filteredCollections.slice(0, nextLimit) });
+    //skip infinite load no more content to load
+    if(filteredCollections.length <= visibleCollections.length){
+      return;
+    }
+
+    set({ loading: true });
+
+    const delay = () => new Promise((res) => setTimeout(res, 2000));
+
+    await delay();
+
+    set({
+      visibleCollections: filteredCollections.slice(0, nextLimit),
+      loading: false,
+    });
   },
 
   updateFilter: (pricingOption: number | null) => {
@@ -126,14 +158,22 @@ export const useCollectionStore = create<CollectionState>((set, get) => ({
   },
 
   applyFilter: () => {
-    const { collections, filterPricingOption, searchQuery, limit } = get();
+    const { collections, filterPricingOption, searchQuery, limit, sortBy } =
+      get();
 
     const filteredCollections = getFilteredCollections(
       filterPricingOption,
       searchQuery,
+      sortBy,
       collections
     );
 
     set({ visibleCollections: filteredCollections.slice(0, limit) });
+  },
+
+  sort: (sortBy) => {
+    set({ sortBy });
+    updateQueryParams(`sortBy`, sortBy);
+    get().applyFilter();
   },
 }));

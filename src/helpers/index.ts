@@ -60,9 +60,11 @@ export const getFilterState = () => {
   const urlParams = new URLSearchParams(window.location.search);
   const pricingOption = urlParams.get("pricingOption");
   const searchQuery = urlParams.get("search");
+  const sortBy = urlParams.get("sortBy");
 
   return {
     filterPricingOption: pricingOption ? pricingOption.split(",").map(Number) : [],
     searchQuery: searchQuery ?? "", 
+    sortBy: sortBy ?? "1",
   };
 };

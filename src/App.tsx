@@ -4,6 +4,7 @@ import "./styles/main.scss";
 import { Collections } from "./components/Collections";
 import Filter from "./components/Filter";
 import Search from "./components/Search";
+import Sort from "./components/Sort";
 
 function App() {
   const { fetchCollections } = useCollectionStore();
@@ -19,6 +20,7 @@ function App() {
       <div className="container">
         <Search />
         <Filter />
+        <Sort />
         <Collections />
       </div>
     </div>
