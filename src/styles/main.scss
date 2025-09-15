@@ -45,6 +45,11 @@ p {
   margin: 0 auto;
 }
 
+.header {
+  background-color: #000;
+  padding: $card-padding;
+}
+
 .card-container {
   display: flex;
   flex-wrap: wrap;
@@ -172,7 +177,7 @@ p {
 
 .search-wrapper {
   display: flex;
-  padding: $card-padding calc($card-padding/2.5 * 2) 0;
+  margin: $card-padding * 2 calc($card-padding/2.5 * 2) 0;
   position: relative;
   input {
     width: 100%;
@@ -186,8 +191,8 @@ p {
   }
   .searchIcon {
     position: absolute;
-    right: $card-padding * 2;
-    top: $card-padding * 2;
+    right: $card-padding * 1.25;
+    top: $card-padding * 1.2;
   }
 }
 
@@ -206,7 +211,7 @@ p {
     outline: none;
     color: $primary-color;
     margin-left: $card-padding * 1.5;
-    option{
+    option {
       background-color: $search-bg-color;
     }
   }
@@ -255,6 +260,10 @@ p {
     input {
       padding: $card-padding;
       font-size: 1rem;
+    }
+    .searchIcon {
+      right: $card-padding - 2;
+      top: $card-padding - 2;
     }
   }
 }

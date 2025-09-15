@@ -5,6 +5,7 @@ import { Collections } from "./components/Collections";
 import Filter from "./components/Filter";
 import Search from "./components/Search";
 import Sort from "./components/Sort";
+import Header from "./components/Header";
 
 function App() {
   const { fetchCollections } = useCollectionStore();
@@ -17,6 +18,7 @@ function App() {
 
   return (
     <div className="bg-wrap">
+      <Header />
       <div className="container">
         <Search />
         <Filter />
